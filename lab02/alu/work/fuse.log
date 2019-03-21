@@ -1,0 +1,35 @@
+Running: C:\Xilinx\14.7\ISE_DS\ISE\bin\nt64\unwrapped\fuse.exe -intstyle ise -incremental -lib unisims_ver -lib unimacro_ver -lib xilinxcorelib_ver -o C:/Users/petersjl/Documents/School/CSSE/132/1819c-csse132-petersjl/lab02/alu/work/alu_4b_alu_4b_sch_tb_isim_beh.exe -prj C:/Users/petersjl/Documents/School/CSSE/132/1819c-csse132-petersjl/lab02/alu/work/alu_4b_alu_4b_sch_tb_beh.prj work.alu_4b_alu_4b_sch_tb work.glbl 
+ISim P.20131013 (signature 0x7708f090)
+Number of CPUs detected in this system: 8
+Turning on mult-threading, number of parallel sub-compilation jobs: 16 
+Determining compilation order of HDL files
+Analyzing Verilog file "C:/Users/petersjl/Documents/School/CSSE/132/1819c-csse132-petersjl/lab02/alu/work/add1b.vf" into library work
+Analyzing Verilog file "C:/Users/petersjl/Documents/School/CSSE/132/1819c-csse132-petersjl/lab02/alu/work/alu_1b.vf" into library work
+Analyzing Verilog file "C:/Users/petersjl/Documents/School/CSSE/132/1819c-csse132-petersjl/lab02/alu/work/alu_4b.vf" into library work
+Analyzing Verilog file "C:/Users/petersjl/Documents/School/CSSE/132/1819c-csse132-petersjl/lab02/alu/work/../testalu_4b.v" into library work
+Analyzing Verilog file "C:/Xilinx/14.7/ISE_DS/ISE//verilog/src/glbl.v" into library work
+Starting static elaboration
+Completed static elaboration
+Compiling module AND3
+Compiling module AND3B1
+Compiling module OR2
+Compiling module M2_1E_MXILINX_alu_4b
+Compiling module MUXF5
+Compiling module M4_1E_MXILINX_alu_4b
+Compiling module VCC
+Compiling module AND2
+Compiling module OR4
+Compiling module INV
+Compiling module OR3
+Compiling module add1b_MUSER_alu_4b
+Compiling module AND2B1
+Compiling module M2_1_MXILINX_alu_4b
+Compiling module alu_1b_MUSER_alu_4b
+Compiling module alu_4b
+Compiling module alu_4b_alu_4b_sch_tb
+Compiling module glbl
+Time Resolution for simulation is 1ps.
+Compiled 18 Verilog Units
+Built simulation executable C:/Users/petersjl/Documents/School/CSSE/132/1819c-csse132-petersjl/lab02/alu/work/alu_4b_alu_4b_sch_tb_isim_beh.exe
+Fuse Memory Usage: 27748 KB
+Fuse CPU Usage: 436 ms
