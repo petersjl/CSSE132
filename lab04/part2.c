@@ -12,7 +12,7 @@
  * When you edit this file for class, be sure to put your name(s) here!
  *
  * Edited by
- * NAMES:
+ * NAMES: Joe Peters, Steven Payne
  *
  */
 
@@ -20,10 +20,10 @@
 #include <stdio.h>
 
 void
-copyIntoBuffer(char* src, char* dest)
+copyIntoBuffer(char* src, char* dest, int bufferSize)
 {
   int i=0;
-  while(src[i] != '\0') {
+  while(src[i] != '\0' && i < bufferSize) {
     dest[i] = src[i];
     i++;
   }
@@ -39,8 +39,9 @@ holyGrail()
 void
 doIt(char* input)
 {
-  char buffer[12];
-  copyIntoBuffer(input, buffer);
+  int bufferSize = 13;
+  char buffer[bufferSize];
+  copyIntoBuffer(input, buffer, bufferSize);
 }
 
 int
