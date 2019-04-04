@@ -10,7 +10,7 @@
  * When you edit this file for class, be sure to put your name here!
  *
  * Edited by
- * NAME:
+ * NAME: Joe Peters
  *
  */
 #include <stdlib.h>
@@ -31,7 +31,11 @@ int length(char* string)
 {
   // TODO: your code goes here.  You may also want to change the return
   // statement.
-  return -1;
+  int i = 0;
+  while(string[i] != '\0'){
+    i++;
+  }
+  return i;
 }
 
 
@@ -48,7 +52,11 @@ int lengthNoArrays(char* string)
 {
   // TODO: your code goes here.  You may also want to change the return
   // statement.
-  return -1;
+  int i = 0;
+  while(*(string + i) != '\0'){
+    i++;
+  }
+  return i;
 }
 
 
@@ -63,7 +71,8 @@ int bitDropper(int input)
 {
   // TODO: your code goes here.  You may also want to change the return
   // statement.
-  return -1;
+  int check = 0xAAAAAAAA;
+  return input & check;
 }
 
 
@@ -82,7 +91,39 @@ int upcaseVowels(char* tochange)
 {
   // TODO: your code goes here.  You may also want to change the return
   // statement.
-  return -1;
+  int ln = length(tochange);
+  int upcased = 0;
+  for (int i = 0; i < ln; i++){
+    switch(tochange[i]){
+
+      case 'a' :
+        tochange[i] = 'A';
+        upcased++;
+        break;
+
+      case 'e' :
+        tochange[i] = 'E';
+        upcased++;
+        break;
+
+      case 'i' :
+        tochange[i] = 'I';
+        upcased++;
+        break;
+
+      case 'o' :
+        tochange[i] = 'O';
+        upcased++;
+        break;
+
+      case 'u' :
+        tochange[i] = 'U';
+        upcased++;
+        break;
+
+    }
+  }
+  return upcased;
 }
 
 /** DO NOT create a main function in this file or the test executable won't work. **/
