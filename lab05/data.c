@@ -14,7 +14,7 @@
  * When you edit this file for class, be sure to put your name(s) here!
  *
  * Edited by
- * NAMES:
+ * NAMES: Joe Peters & Stephen Payne
  *
  */
 
@@ -42,6 +42,15 @@ dbe_print(struct db_entry* entry)
   fprintf(stdout, "%s => %s\n", entry->name, entry->value);
 }
 
+int
+strsize(const char* string)
+{
+  int i = 0;
+  while(string[i] != '\0'){
+    i++;
+  }
+  return i;
+}
 
 /**
  * Allocates space for a db_entry's members and copies the strings into the
@@ -74,9 +83,19 @@ dbe_alloc(const char* name, const char* value)
   // Don't forget to:
   //   - null-terminate the strings
   //   - connect the structure to the newly allocated strings!
-  return NULL;
-}
+  struct db_entry* entry = malloc(sizeof(struct db_entry));
+  char* newname = malloc(strsize(name) + 1);
+  char* newvalue = malloc(strsize(value) + 1);
 
+  memcpy(newname, name, strsize(name));
+  memcpy(newvalue, value, strsize(value));
+  newname[strsize(name)] = '\0';
+  newvalue[strsize(value)] = '\0';
+
+  entry->name = newname;
+  entry->value = newvalue;
+  return entry;
+}
 
 /**
  * Releases the memory held by the a db_entry struct.
@@ -91,6 +110,9 @@ dbe_free(struct db_entry* entry)
   // TODO:
   // free space allocated for the structure's members and for the structure
   // itself.
+  free(entry->name);
+  free(entry->value);
+  free(entry);
 }
 
 
@@ -132,6 +154,11 @@ do_add_entry(struct db_entry** db, const char* name, const char* value)
   //   [ X, Y, Z, 0, 0, 0, 0 ... 0 ]
   // After adding A, it will look like this:
   //   [ X, Y, Z, A, 0, 0, 0 ... 0 ]
+  int i = 0;
+  while(db[i] != 0){
+    i++;
+  }
+  db[i] = dbe_alloc(name, value);
 }
 
 
@@ -152,7 +179,11 @@ db_count_entries(struct db_entry** database)
   // You can assume there won't be NULL entries betwee non-NULL entries.
   // Hint: the database will never be bigger than the constant value DB_MAX_SIZE
   //       (this is a global constant at the top of this file).
-  return 0;
+  int i = 0;
+  while(database[i] != 0 && i < DB_MAX_SIZE){
+    i++;
+  }
+  return i;
 }
 
 
@@ -167,7 +198,7 @@ db_count_entries(struct db_entry** database)
  * @param index: the index of the item to remove.
  */
 void
-db_remove(struct db_entry** database, int index)
+db_remove(struct db_entry** db, int index)
 {
   // TODO:
   // remove the item at the given index.
@@ -177,6 +208,13 @@ db_remove(struct db_entry** database, int index)
   //   [ X, Y, Z, 0 ... 0 ]
   // After removing Y, it will look like this:
   //   [ X, Z, 0, 0 ... 0 ]
+  if(db[index] == NULL) return;
+  dbe_free(db[index]);
+  int i = index;
+  do{
+   db[i] = db[i+1];
+   i++;
+  }while(db[i]!=0 && (i+1) < DB_MAX_SIZE);
 }
 
 
@@ -192,8 +230,20 @@ do_list_database(struct db_entry** db)
   // List all the entries in the database.  You'll need a loop and use the
   // dbe_print() function.
   // Don't list the null entries (entries that haven't been added yet).
+  int i = 0;
+  while(db[i] != NULL){
+    dbe_print(db[i]);
+    i++;
+  }
 }
-
+int
+stringcheck(char* target, char* check){
+  int i = 0;
+  while(target[i] != '\0'){
+    if(target[i] != check[i]) return 0;
+  }
+  return 0;
+}
 
 /**
  * This looks for "target" in the database and returns the index if found.
@@ -208,7 +258,7 @@ do_list_database(struct db_entry** db)
  * @returns the index of the first matching entry or -1 if it wasn't found.
  */
 int
-db_find_one(struct db_entry** database,
+db_find_one(struct db_entry** db,
             const char* target,
             int initialIndex)
 {
@@ -224,6 +274,11 @@ db_find_one(struct db_entry** database,
   // Note: to figure out the count, you can use a function to determine the
   // length of "target".  See the section 3 manpage for "string" for some
   // possibilities.
+  int i = initialIndex;
+  while(db[i] != NULL && i < DB_MAX_SIZE){
+    if(strncmp(target, db[i]->name, strsize(target)) == 0) return i;
+    i++;
+  }
   return -1;
 }
 
@@ -244,6 +299,9 @@ do_remove_first_match(struct db_entry** db, const char* target)
   // TODO:
   // Find the first thing that matches target, and remove it.
   // Be sure to return 0 if nothing is found!
-  return 0;
+  int rm = db_find_one(db, target, 0);
+  if(rm == -1) return 0;
+  db_remove(db, rm);
+  return 1;
 }
 

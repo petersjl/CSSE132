@@ -5,7 +5,8 @@
 #
 # Makefile - This is used to make the lab.  This is not a
 # file you need to hand in, unless you modify it.
-#
+# 
+# Edited by: Joe Peters & Stephen Payne
 
 
 # By default, make "lab5" and "test"
@@ -29,5 +30,7 @@ unity/unity.o: unity/unity.c
 	gcc -c -o unity/unity.o -Iunity unity/unity.c
 
 # TODO: also add your new rule's name to this list when you've created it
+simple: simple.c data.c
+	gcc -g -o simple simple.c data.c
 clean:
 	rm lab5 test unity/unity.o
