@@ -13,7 +13,7 @@
  * When you edit this file for class, be sure to put your name here!
  *
  * Edited by
- * NAME:
+ * NAME: Joe Peters
  */
 
 
@@ -29,7 +29,7 @@
 .type add, %function
 add:
   /* TODO: finish this procedure here. */
-
+  add r0, r0, r1
   /* return from this procedure (jump to lr) */
   bx lr
 
@@ -51,7 +51,10 @@ add:
 .type greater, %function
 greater:
   /* TODO: finish this procedure here */
-
+  cmp r0, r1
+  bgt .SEC
+  mov r0, r1
+ .SEC:
   /* return from this procedure (jump to lr) */
   bx lr
 
@@ -85,7 +88,16 @@ greater:
 .type sumArray, %function
 sumArray:
   /* TODO: finish this procedure here */
-
+  mov r3, #0
+  mov r4, #0
+ .LOOP:
+  ldr r2, [r0, r4]
+  add r3, r3, r2
+  add r4, r4, #4
+  sub r1, #1
+  cmp r1, #0
+  bgt .LOOP
+  mov r0, r3
   /* return from this procedure (jump to lr) */
   bx lr
 
