@@ -5,7 +5,7 @@
  * Complete the functions in this file and be sure to
  * TYPE YOUR NAME IN THIS FILE BELOW.
  *
- * NAME:
+ * NAME: Joe Peters
  *
  * REQUIREMENTS:
  * 1. Remove each TODO comment after you complete it.
@@ -47,7 +47,7 @@ int isAlpha(char c)
  * Given a character and a string, count how many such copies of the character
  * there are in the string.
  *
- * You may ONLY call functions if they are defined in this file. So, you can 
+ * You may ONLY call functions if they are defined in this file. So, you can
  * call 'isAlpha()' but not 'strlen()'.
  *
  * @param input - the C string to examine. WARNING: it may be NULL!
@@ -57,8 +57,14 @@ int isAlpha(char c)
  */
 int countChar(char* input, char c)
 {
-    //TODO: implement this function
-    return -1;
+    if(input == NULL) return 0;
+    int i = 0;
+    int count = 0;
+    while(input[i] != '\0'){
+      if(input[i] == c) count++;
+      i++;
+    }
+    return count;
 }
 
 
@@ -73,7 +79,7 @@ int countChar(char* input, char c)
  *   charToNum('3') returns 3
  *   charToNum('x') returns -1
  *
- * You may ONLY call functions if they are defined in this file. So, you can 
+ * You may ONLY call functions if they are defined in this file. So, you can
  * call 'isAlpha()' but not 'strlen()'.
  *
  * @input c - the character to convert
@@ -81,8 +87,11 @@ int countChar(char* input, char c)
  *         digit).
  */
 int charToNum(char c) {
-    //TODO: implement this function
-    return -1;
+    if(isAlpha(c)) return -1;
+    if(c == '\0' || c == '(' || c == ' ' || c == '\n') return -1;
+    int ret = c % 48;
+    if(ret > 9) return -1;
+    return ret;
 }
 
 /**
@@ -94,15 +103,26 @@ int charToNum(char c) {
  * A-Z or a-z (see isAlpha()), and the digit is between character value '2' and
  * '9'.
  *
- * You may ONLY call functions if they are defined in this file. So, you can 
+ * You may ONLY call functions if they are defined in this file. So, you can
  * call 'isAlpha()' but not 'strlen()'.
  *
  * @param str - the string to examine (nay be NULL or empty!)
  * @return 1 if str is "compressed", otherwise return 0.
  */
 int isCompressed(char* str) {
-    //TODO: implement this function
-    return 0;
+    if(str == NULL) return 0;
+    if(!isAlpha(str[0])) return 0;
+    int i = 1;
+    while(isAlpha(str[i])) i++;
+    int check = charToNum(str[i]);
+    if(check < 2 || check > 9) return 0;
+    return 1;
+}
+
+int length(char* s){
+  int i = 0;
+  while(s[i] != '\0') i++;
+  return i;
 }
 
 /**
@@ -129,14 +149,23 @@ int isCompressed(char* str) {
  *  - free
  *  - any functions defined in this file.
  *
- * @param str - An input string to decompress. This string is 
+ * @param str - An input string to decompress. This string is
  *              GUARANTEED to be a valid compressed string.
  * @returns the address of the newly decompressed string.
  */
 char* decompress(char* str)
 {
-    //TODO: implement this function
-    return NULL;
+    int len = length(str) - 1;
+    int multiple = charToNum(str[len]);
+    char* string = malloc(len * 4 * multiple);
+    int pos = 0;
+    for(int i = 0; i < multiple; i++){
+      for(int j = 0; j < len; j++){
+        string[pos] = str[j];
+        pos++;
+      }
+    }
+    return string;
 }
 
 
