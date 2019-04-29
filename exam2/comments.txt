@@ -1,0 +1,27 @@
+Grader comments on Exam 2
+===========================================
+ 36/40
+
+[[ part1.c ]] 29/30
+
+countChar():
+------------------------------
+good
+
+charToNum():
+------------------------------
+why did you select an arbitrary group of chars to specifically check? "( \n"
+What if ret < 0?
+
+isCompressed():
+------------------------------
+good
+
+decompress():
+------------------------------
+need to null terminate your string
+
+
+[[ decompress.c ]]  7/10
+The instructions say to add all the decompressed strings to an array.  This is so you can FREE them.  You leak all your malloced memory.
+
