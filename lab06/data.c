@@ -14,7 +14,7 @@
  * When you edit this file for class, be sure to put your name(s) here!
  *
  * Edited by
- * NAMES:
+ * NAMES: Joe Peters, Stephen Payne
  *
  */
 
@@ -36,7 +36,7 @@ const unsigned int DB_MAX_SIZE = 128;
  * @param entry: the db_entry struct to print
  */
 void
-dbe_print(struct db_entry* entry)
+dbe_print(struct db_entry* entry, FILE* fd)
 {
   //TODO: Modify this function to have an additional FILE* parameter.
   // This way you can print an entry to the screen with:
@@ -49,7 +49,7 @@ dbe_print(struct db_entry* entry)
   //   dbe_print(entry, fd);
   //   fclose(fd);
 
-  printf("%s => %s\n", entry->name, entry->value);
+  fprintf(fd, "%s => %s\n", entry->name, entry->value);
 }
 
 /**
@@ -205,7 +205,7 @@ do_list_database(struct db_entry** db)
 {
   int i;
   for(i=0; i < DB_MAX_SIZE && db[i] != NULL; i++) {
-    dbe_print(db[i]);
+    dbe_print(db[i], stdout);
   }
 }
 
@@ -267,6 +267,15 @@ do_export_db(struct db_entry** db, const char* filename)
   // * open the file
   // * write each db entry into it (you can use dbe_print here) 
   // * close the file.
+  FILE* fd = fopen(filename, "w");
+  if(fd == NULL){
+    printf("ERROR: file not found");
+    return;
+  }
+  for(int i=0; i < DB_MAX_SIZE && db[i] != NULL; i++) {
+         dbe_print(db[i], fd);
+  }
+  fclose(fd);
 }
 
 /**
@@ -302,6 +311,18 @@ do_import_db(struct db_entry** db, const char* filename)
   // of a file (see the man page).
   //
   // Don't forget to close the file that you open!
+  FILE* fd = fopen(filename, "r");
+  if(fd == NULL){
+    printf("ERROR: file not found");
+    return 0;
+  }
+  char buf[512];
+  char buf2[512];
+  while(fscanf(fd, "%512[^=]=> %512[^\n]\n", buf, buf2) != EOF){
+    buf[strlen(buf)-1] = '\0';
+    buf2[strlen(buf2)] = '\0';
+    do_add_entry(db, buf, buf2);
+  }
 }
 
 /**
@@ -319,7 +340,8 @@ getALine(char* dest, int maxlen, FILE* fd)
   // Use fgets to read some data into dest from fd.
   // Before returning, you should replace newline character with a
   // null character
-
-  return -1;
+  fgets(dest, maxlen, fd);
+  dest[strlen(dest)-1] = '\0';
+  return strlen(dest);
 }
 

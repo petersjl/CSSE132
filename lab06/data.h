@@ -22,7 +22,7 @@ struct db_entry {
 };
 
 // Some function declarations from Lab 5
-void   dbe_print(struct db_entry* entry);
+void   dbe_print(struct db_entry* entry, FILE* fd);
 struct db_entry* dbe_alloc(const char* name, const char* value);
 void   dbe_free(struct db_entry* entry);
 int    db_count_entries(struct db_entry** database);

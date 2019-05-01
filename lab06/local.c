@@ -14,7 +14,7 @@
  * When you edit this file for class, be sure to put your name(s) here!
  *
  * Edited by
- * NAMES:
+ * NAMES: Joe Peters, Stephen Payne
  *
  */
 
@@ -65,7 +65,7 @@ handleLocalInput(struct db_entry** db)
 {
   // This is a string you can print to give the user instructions.
   // Be sure to update it as you implement new commands!
-  const char* instructions = " (a)dd, (l)ist, or (q)uit";
+  const char* instructions = " (a)dd, (l)ist, (f)ind, (r)emove, (e)xport, (i)mport, or (q)uit";
   char buf[512];
   char buf2[512];
 
@@ -75,32 +75,40 @@ handleLocalInput(struct db_entry** db)
 
     // read input
     // TODO: Uncomment the next line once you've implemented getALine()
-    //getALine(buf, 512, stdin);
+    getALine(buf, 512, stdin);
 
     // select instruction to run based on the input
     switch(buf[0]) {
     case 'q':
     case 'x':
-      // TODO: somehow get out of this run loop
+      return;
       break;
 
     case 'l': // LIST
-      // TODO: implement this
+      do_list_database(db);
       break;
 
     case 'a': // ADD
-      // TODO:
       // 1. prompt for the name and value (use printf) and
       //    read the name and value into buffers (use getALine).
       //    HINT: use the arrays declared at the top of this function.
       // 2. call do_add_entry to add it to the database
+      printf("          name? ");
+      getALine(buf, 512, stdin);
+      printf("          value? ");
+      getALine(buf2, 512, stdin);
+      do_add_entry(db, buf, buf2);
+      printf("\n");
       break;
 
     case 'r': // FIND and REMOVE ONE
-      // TODO:
       // prompt for the name
       // HINT: use the arrays declared at the top of this function.
       // remove the first entry that matches the name.
+      printf("          name? ");
+      getALine(buf, 512, stdin);
+      int index = db_find_one(db, buf, 0);
+      db_remove(db, index);
       break;
 
     case 'f': // FIND
@@ -111,21 +119,27 @@ handleLocalInput(struct db_entry** db)
       break;
 
     case 'e': // EXPORT
-      // TODO
       // 1. prompt for the file name
       // 2. read the file name into a buffer
       // 3. run the export function you implemented.
+      printf("         file name? ");
+      getALine(buf, 512, stdin);
+      do_export_db(db, buf);
+
       break;
 
     case 'i': // IMPORT
       // TODO: implement this (similar to export)
+      printf("         file name? ");
+      getALine(buf, 512, stdin);
+      do_import_db(db, buf);
       break;
 
     default:
-      // TODO:
       // The instruction was not one of the above instructions.
       // Print out a help screen that explains what instructions
       // are available.
+      printf("The available commands are:\n%s", instructions);
       break;
     }
   }

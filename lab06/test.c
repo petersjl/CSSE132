@@ -259,9 +259,12 @@ test_getALine(void)
   TEST_ASSERT_NOT_EQUAL(0, rv);
   TEST_ASSERT_EQUAL_STRING(S_TEST2, buf);
 
-  //TODO: add a third test here.  
-  //  It's ok to copy and paste a previous test, if you change the 
-  //  variable names and the data being tested.
+  const char* S_TEST3 = "count this too?";
+  preloadFgets(S_TEST3);
+  rv = getALine(buf, 512, stdin);
+  TEST_ASSERT_EQUAL(strlen(S_TEST3), rv);
+  TEST_ASSERT_EQUAL_STRING(S_TEST3, buf);
+
 }
 
 void
