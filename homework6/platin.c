@@ -10,7 +10,7 @@
  * When you edit this file for class, be sure to put your name here!
  *
  * Edited by
- * NAME: 
+ * NAME: Joe Peters 
  *
  */
 #include <stdio.h>
@@ -83,10 +83,26 @@ int main(int argc, char** argv)
   // TODO: Mode 1 -- do this first.
   // If there are arguments (more than just the program name), pigify them and
   // return.
-
+  if(argc > 1){
+    for(int i = 1; i < argc; i++){
+      char* word = pigify(argv[i]);
+      printf("%s\n", word);
+      free(word);
+    }
+    return 0;
+  }
   // TODO: Mode 2: since there were no arguments, read words one at a time
   // (using fgets) until an empty word shows up. When you read an empty word,
   // stop reading and return.
-
+  char buf[101];
+  while( 1 ){
+    printf("+   ");
+    fgets(buf, 101, stdin);
+    if(buf[0] == '\n') return 0;
+    buf[strlen(buf) -1] = '\0';
+    char* word = pigify(buf);
+    printf("-   %s\n", word);
+    free(word);
+  }
   return 0;
 }
