@@ -10,7 +10,7 @@
  * When you edit this file for class, be sure to put your name here!
  *
  * Edited by
- * NAME:
+ * NAME: Joe Peters
  *
  */
 #include <stdlib.h>
@@ -33,8 +33,11 @@
  */
 int startsWith(char* input, char* targets)
 {
-  // TODO: implement this function here
-  return -1;
+  int l = strlen(targets);
+  for(int i = 0;i < l; i++){
+    if(input[0] == targets[i]) return 1;
+  }
+  return 0;
 }
 
 
@@ -52,8 +55,7 @@ int startsWith(char* input, char* targets)
  */
 int startsWithVowel(char* input)
 {
-  // TODO: implement this function here
-  return -1;
+  return startsWith(input, "aeiouAEIOU");
 }
 
 /**
@@ -80,9 +82,27 @@ int startsWithVowel(char* input)
  */
 char* pigify(char* input)
 {
-  // TODO: implement this function here
-  // IMPORTANT: DO NOT free any malloc (the caller will do that)
-  return NULL;
+  char* new;
+  if(startsWithVowel(input)){
+    int length = strlen(input);
+    new = malloc((length + 4) * 4);
+    strncpy(new, input, length);
+    new[length] = 'y';
+    new[length + 1] = 'a';
+    new[length + 2] = 'y';
+    new[length + 3] = '\0';
+  }
+  else{
+    int length = strlen(input) - 1;
+    new = malloc((length + 4) * 4);
+    strncpy(new, input + 1, length);
+    new[length] = input[0];
+    new[length + 1] = 'a';
+    new[length + 2] = 'y';
+    new[length + 3] = '\0';
+  }
+
+  return new;
 }
 
 /** DO NOT create a main function in this file or the test executable won't work. **/
