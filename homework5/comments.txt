@@ -1,0 +1,24 @@
+Grader comments on Homework 5
+===========================================
+grade: 48/50
+
+
+[[ problems.c ]]
+
+skipper(): Need to allocate space for the null terminator and account for an input string of odd length 
+------------------------------
+
+string2num():
+------------------------------
+
+
+[[ problems.s ]]
+
+add:
+------------------------------
+
+greater:
+------------------------------
+
+sumArray:
+------------------------------
