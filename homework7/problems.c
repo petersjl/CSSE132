@@ -10,7 +10,7 @@
  * When you edit this file for class, be sure to put your name here!
  *
  * Edited by
- * NAME:
+ * NAME: Joe Peters
  *
  */
 #include <stdlib.h>
@@ -34,8 +34,9 @@
  */
 int isWordChar(char x)
 {
-  // TODO: complete this function.
-  return -1;
+  if(x > 64 && x < 91 ) return 1;
+  if(x > 96 && x < 123) return 1;
+  return 0;
 }
 
 /**
@@ -56,7 +57,9 @@ int isWordChar(char x)
 int wordlen(char* str)
 {
   // TODO: complete this function
-  return -1;
+  int size = 0;
+  while(isWordChar(str[size]))size++;
+  return size;
 }
 
 
