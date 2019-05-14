@@ -14,7 +14,7 @@
  * When you edit this file for class, be sure to put your name(s) here!
  *
  * Edited by
- * NAMES:
+ * NAMES: Joe Peters and Stephen Payne
  *
  */
 
@@ -40,12 +40,16 @@ const unsigned short      SERVER_PORT     = 20000;
 void
 do_remote_list_database(int sock, struct db_entry** db)
 {
-  // TODO: implement this.
   // It is very similar to do_list_database, but instead of using
   // printf, you'll be sending to the socket "sock".
   //
   // Hint: use sprintf and a local string variable to construct each
   //       text line you want to send, then send it.
+  char out[512];
+  for(int i = 0; i < 128 && db[i] != NULL; i++){
+    sprintf(out, "%s => %s\n", db[i]->name, db[i]->value);
+    send(sock, out, strlen(out), 0);
+  }
 }
 
 /**
@@ -58,7 +62,6 @@ do_remote_list_database(int sock, struct db_entry** db)
 void
 do_remote_find_all_matches(int sock, struct db_entry** db, const char* target)
 {
-  // TODO: implement this.
   // It is very similar to do_find_all_matches, but instead of using
   // printf, you'll be sending to the socket "sock".  The changes to
   // this function are almost identical to the changes you made for
@@ -66,6 +69,14 @@ do_remote_find_all_matches(int sock, struct db_entry** db, const char* target)
   //
   // Hint: use sprintf and a local string variable to construct each
   //       text line you want to send, then send it. 
+  int i = -1;
+  char out[512];
+  while(1){
+    i = db_find_one(db, target, i + 1);
+    if(i == -1) break;
+    sprintf(out, "%s => %s\n", db[i]->name, db[i]->value);
+    send(sock, out, strlen(out), 0);
+  }
 }
 
 
@@ -100,12 +111,87 @@ do_remote_find_all_matches(int sock, struct db_entry** db, const char* target)
 void
 handleRemoteInput(struct db_entry** db, int clientsock)
 {
-  // TODO: Implement the command/response run loop.
   // It will be very similar to the handleLocalInput() in your local.c file.
   // The main difference is that instead of getALine and printf, you'll be
   // sending and receiving to and from clientsock.
   //
   // Some hints: see the manpages for send and recv.  (They're in section 2 of the manual).
+
+  // This is a string you can print to give the user instructions.
+  // Be sure to update it as you implement new commands!
+  const char* instructions = " (a)dd, (r)emove, (l)ist, (f)ind, or (q)uit\n";
+  char buf[512];
+  char buf2[512];
+  int rec;
+
+  // loop forever
+  for( ;; ) {
+    send(clientsock, "(Remote)> ", 10, 0);
+
+    // read input
+    rec = recv(clientsock, buf, 512, 0);
+    buf[rec] = '\n';
+
+    // select instruction to run based on the input
+    switch(buf[0]) {
+    case 'q':
+    case 'x':
+      printf("Recieved remote input: 'exit'\n");
+      return;
+
+    case 'l': // LIST
+      printf("Recieved remote input: 'l'\n");
+      do_remote_list_database(clientsock, db);
+      break;
+
+    case 'a': // ADD
+      // 1. prompt for the name and value (use printf) and
+      //    read the name and value into buffers (use getALine).
+      printf("Recieved remote input: 'a'\n");
+      send(clientsock, "\t name? ", 9, 0);
+      rec = recv(clientsock, buf, 512, 0);
+      buf[rec - 1] = '\0';
+      send(clientsock, "\t value? ", 10, 0);
+      rec = recv(clientsock, buf2, 512, 0);
+      buf2[rec - 1] = '\0';
+
+      // 2. call do_add_entry to add it to the database
+      do_add_entry(db, buf, buf2);
+      break;
+
+    case 'r': // FIND and REMOVE ONE
+      // prompt for the name
+      printf("Recieved remote input: 'r'\n");
+      send(clientsock, "\t name to remove? ", 19, 0);
+      rec = recv(clientsock, buf, 512, 0);
+      buf[rec - 1] = '\0';
+
+      // remove the first entry that matches the name.
+      do_remove_first_match(db, buf);
+      break;
+
+
+    case 'f': // FIND
+      // prompt for the name
+      // find and print all the matches.
+      printf("Recieved remote input: 'f'\n");
+      send(clientsock, "\t name to find? ", 19, 0);
+      rec = recv(clientsock, buf, 512, 0);
+      buf[rec - 1] = '\0';
+
+      do_remote_find_all_matches(clientsock, db, buf);
+      break;
+
+    default:
+      // The instruction was not one of the above instructions.
+      // Print out a help screen that explains what instructions
+      // are available.
+      printf("Recieved remote input: Non-applicable char\n");
+      send(clientsock, "Invalid instruction.\n", 21, 0);
+      send(clientsock, instructions, strlen(instructions), 0);
+      break;
+    }
+  }
 }
 
 void
@@ -130,8 +216,12 @@ runServer(struct db_entry** database)
   serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);  // accept on any interface
   serv_addr.sin_port = htons(SERVER_PORT);
 
-  // TODO: Create a socket (family is AF_INET, type is stream, and protocol
   // is TCP).  See the manpage for socket for more info.
+  sock = socket(AF_INET, SOCK_STREAM, 0);
+  if(sock == -1){
+    printf("ERROR: Could not create socket\n");
+    return;
+  }
 
 
   // These two lines let us rerun the server immediately after we kill it
@@ -140,29 +230,36 @@ runServer(struct db_entry** database)
 
 
 
-  // TODO: bind and listen!
   // To convert a variable of type (struct sockaddr_in*) to a (struct sockaddr*)
   // you will have to typecast it.
-
+  if(bind(sock, (struct sockaddr *)&serv_addr, cli_addr_len)){
+    printf("ERROR: Could not bind\n");
+    return;
+  }
+  printf("Waiting for connection...\n");
+  listen(sock, 0);
 
   // run loop
   while(1)
   {
-    // TODO: accept a connection
     // It may be helpful to display the remote client's IP address after
     // accepting a connection. TO do this, you can use the address that 
     // accept puts into its sockaddr argument and convert it to a string using
     // inet_ntoa().  See the manpage for details on how to use inet_ntoa().
-
+    clientsock = accept(sock, (struct sockaddr *)&cli_addr, &cli_addr_len);
+    printf("Connecting to: %s\n", inet_ntoa(cli_addr.sin_addr));
     // HANDLE ONE CLIENT
     handleRemoteInput(database, clientsock);
 
-    // TODO: shut down and close the client socket.
     // When handleRemoteInput() returns, the client is done interacting.
+    printf("Disconnecting from: %s\n", inet_ntoa(cli_addr.sin_addr));
+    shutdown(clientsock, SHUT_RDWR);
+    close(clientsock);
+    printf("Waiting for connection...\n");
   }
 
-  // TODO: outside the loop, the server has nothing left to do.  Close the
   // server socket.
+  close(sock);
 }
 
 
