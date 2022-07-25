@@ -1,0 +1,1 @@
+-intstyle "ise" -incremental -lib "unisims_ver" -lib "unimacro_ver" -lib "xilinxcorelib_ver" -o "C:/Users/petersjl/Documents/School/CSSE/132/1819c-csse132-petersjl/extra-stuff/mega_AND/work/test_mega_and_isim_beh.exe" -prj "C:/Users/petersjl/Documents/School/CSSE/132/1819c-csse132-petersjl/extra-stuff/mega_AND/work/test_mega_and_beh.prj" "work.test_mega_and" "work.glbl" 

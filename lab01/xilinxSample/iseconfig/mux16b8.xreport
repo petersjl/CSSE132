@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <report-views version="2.0" >
  <header>
-  <DateModified>2014-10-02T16:55:16</DateModified>
+  <DateModified>2019-03-12T18:23:28</DateModified>
   <ModuleName>mux16b8</ModuleName>
   <SummaryTimeStamp>2014-10-02T16:40:59</SummaryTimeStamp>
-  <SavedFilePath>/home/mellor/ProfessionalArchives/Teaching/Class/xilinx-projects/mux16b8/iseconfig/mux16b8.xreport</SavedFilePath>
-  <ImplementationReportsDirectory>/home/mellor/ProfessionalArchives/Teaching/Class/xilinx-projects/mux16b8/work/</ImplementationReportsDirectory>
+  <SavedFilePath>C:/Users/petersjl/Documents/School/CSSE/132/1819c-csse132-petersjl/lab01/xilinxSample/iseconfig/mux16b8.xreport</SavedFilePath>
+  <ImplementationReportsDirectory>C:/Users/petersjl/Documents/School/CSSE/132/1819c-csse132-petersjl/lab01/xilinxSample/work\</ImplementationReportsDirectory>
   <DateInitialized>2010-10-10T09:54:33</DateInitialized>
   <EnableMessageFiltering>false</EnableMessageFiltering>
  </header>
